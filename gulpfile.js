@@ -34,7 +34,7 @@ gulp.task('lint', function () {
 });
 
 //watch Files For Changes
-gulp.task('watch', ['build', 'styles'], function () {
+gulp.task('watch', function () {
   browserSync({
     server: {
       baseDir: "./",
@@ -49,4 +49,4 @@ gulp.task('watch', ['build', 'styles'], function () {
 
 
 //tasks aliases
-gulp.task('default', ['build', 'styles']);
+gulp.task('default', ['build', 'styles', 'watch']);
