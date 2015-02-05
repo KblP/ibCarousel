@@ -1,40 +1,49 @@
-(function ($, undefined) {
+;(function($, window, document, undefined) {
   'use strict';
 
-  // Collection method.
-  $.fn.extend({
-    ibcarousel: function(options) {
+  var ibCarousel = function(elem, options) {
+    this.elem = elem;
+    this.$elem = $(elem);
+    this.options = options;
+    // <div class=item' data-plugin-options='{"message":"Goodbye World!"}'></div>
+    this.metadata = this.$elem.data('plugin-options');
+  };
 
-      var defaults = {};
-      var settings = $.extend(defaults, options);
+  ibCarousel.prototype = {
+    defaults: {
+      autoplay: 1,
+      pause: 5000,
+      animation: 1000,
+      transitions: true
+    },
+    init: function() {
 
-      return this.each(function() {
+      this.config = $.extend({}, this.defaults, this.options,
+        this.metadata);
 
-        var $t = $(this);
+      var $t = this.$elem;
 
-        var frames = $t.children();
-        var framesStr = '';
-        frames.each(function() {
-          framesStr += $.trim(this.outerHTML);
-        });
-        $t.html(framesStr);
-
+      var frames = $t.children();
+      var framesStr = '';
+      frames.each(function() {
+        framesStr += $.trim(this.outerHTML);
       });
-    }
-  });
 
-  // Static method.
-  $.extend({
-    ibcarousel: function(options) {
+      $t.html(framesStr);
 
-      var defaults = {};
-      var settings = $.extend(defaults, options);
+      this.sampleMethod();
+      return this;
+    },
+    sampleMethod: function() {
 
     }
-  });
+  }
+  ibCarousel.defaults = ibCarousel.prototype.defaults;
 
-}(jQuery));
-
-$(document).ready(function() {
-  $('.ibcarousel').ibcarousel();
-});
+  $.fn.ibcarousel = function(options) {
+    return this.each(function() {
+      new ibCarousel(this, options).init();
+    });
+  };
+  //optional: window.ibCarousel = ibCarousel;
+})(jQuery, window, document);
